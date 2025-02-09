@@ -1,0 +1,27 @@
+
+
+[project]
+name = "option-strategy-simulator"
+version = "0.1.0"
+description = "Visual Analysis for Options Trading"
+readme = "README.md"
+license = {file = "LICENSE"}
+requires-python = ">=3.11"
+authors = [
+  {name = "Derek Boonstra", email = "derek.boonstra@proton.me"},
+]
+dependencies = [
+    "numpy>=2.2.2",
+    "pydantic>=2.10.6",
+    "scipy>=1.15.1",
+    "matplotlib>=3.9.3",
+]
+
+[project.urls]
+Homepage = "https://github.com/dboonstra/option-strategy-simulator"
+
+[tool.uv]
+dev-dependencies = [
+    "pytest>=8.3.3",
+]
+
