@@ -117,8 +117,10 @@ class OptionStrategy(BaseModel, arbitrary_types_allowed=True):
         delta: float = None,
     ):
         """Adds an option leg to the strategy."""
-        if option_type == 'S' and days_to_expiration is None:
-            days_to_expiration = 1
+        if option_type == 'S':
+            if days_to_expiration is None:
+                days_to_expiration = 1000
+            mark = strike_price
         elif days_to_expiration is None:
             days_to_expiration = self.days_to_expiration
         if mark is None and volatility is None:
