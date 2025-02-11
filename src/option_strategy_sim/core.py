@@ -44,11 +44,11 @@ class OptionStrategyRepr(BaseModel, extra='allow'):
     delta: float
     vega: float
     title: str 
-    monte_carlo: bool = False
     stddev_range: float 
-    num_simulations: int 
-    r: float 
-    year_days: int
+    #monte_carlo: bool = False
+    #num_simulations: int 
+    #r: float 
+    #year_days: int
 
     def __init__(self, **kwargs):
         # Initialize with known fields only
@@ -184,11 +184,11 @@ class OptionStrategy(BaseModel, arbitrary_types_allowed=True):
             return self.sigma
         return 0.22  # if all else none , 22 is fair
     
-    def option_legs(self, stock: bool=True) -> List[OptionLeg]:
+    def option_legs(self) -> List[OptionLeg]:
         """Returns a list of option legs, excluding underlying stock legs."""
         return [leg for leg in self.legs if leg.option_type != 'S']
 
-    def stock_legs(self, stock: bool=True) -> List[OptionLeg]:
+    def stock_legs(self) -> List[OptionLeg]:
         """Returns a list of option legs, excluding underlying stock legs."""
         return [leg for leg in self.legs if leg.option_type == 'S']
     # ________________________

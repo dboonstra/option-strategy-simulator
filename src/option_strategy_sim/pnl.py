@@ -20,7 +20,7 @@ class OptionPnLRepr(BaseModel, extra='allow'):
     Representation of OptionPnL key stats
     """
     days_to_expiration: float = None
-    payoff: bool = False  # True if we are reviewing expiration
+    # payoff: bool = False  # True if we are reviewing expiration
     stddev: float = None  # standard deviation at our DTE
     expected_profit: float = None
     pop: float = None
@@ -60,7 +60,6 @@ class OptionPnL(BaseModel, arbitrary_types_allowed=True):
     def __init__(self, **data):
         super().__init__(**data)
         if self.payoff:
-            # self.days_to_expiration = self.optionstrategy.days_to_expiration
             self.days_to_expiration = 0
         # build PnL profile
         self.stddev = self.calc_stddev()
