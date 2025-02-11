@@ -29,8 +29,8 @@ class OptionLegRepr(BaseModel, extra='allow'):
     vega: float = None
     theta: float = None
     gamma: float = None
-    symbol: str | None = None
-    expirey: date | None = None
+    # symbol: str | None = None
+    # expirey: date | None = None
 
 
     def __init__(self, **kwargs):
@@ -64,8 +64,8 @@ class OptionLeg(BaseModel, arbitrary_types_allowed=True):
     theta: float = None
     gamma: float = None
     # metadata without calculation involvement
-    symbol: str = None
-    expirey: date | None = None
+    # symbol: str = None
+    # expirey: date | None = None
 
     @field_validator('quantity')
     def validate_quantity(cls, value):
