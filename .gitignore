@@ -131,3 +131,4 @@ dmypy.json
 x
 xx
 t.py
+dev/test*
