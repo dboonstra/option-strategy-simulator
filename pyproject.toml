@@ -2,7 +2,7 @@
 
 [project]
 name = "option-strategy-simulator"
-version = "0.1.0"
+version = "0.1.1"
 description = "Visual Analysis for Options Trading"
 readme = "README.md"
 license = {file = "LICENSE"}
