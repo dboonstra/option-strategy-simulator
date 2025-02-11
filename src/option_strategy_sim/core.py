@@ -257,7 +257,7 @@ class OptionStrategy(BaseModel, arbitrary_types_allowed=True):
         return self.get_pnl_attr("stddev", idx)
 
     def dte(self, idx: int = 0) -> float:
-        return self.get_pnl_attr("dte", idx)
+        return self.get_pnl_attr("days_to_expiration", idx)
 
     def price_range(self, idx: int = 0) -> float:
         return self.get_pnl_attr("price_range", idx)
