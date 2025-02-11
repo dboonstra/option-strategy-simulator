@@ -1,7 +1,6 @@
 import sys
-sys.path.append("..")
-sys.path.append("src")
-sys.path.append("../src")
+sys.path.insert(0,"src")
+sys.path.insert(0,"../src")
 
 import pytest
 from option_strategy_sim.core import OptionStrategy, OptionLeg, OptionStrategyRepr
@@ -12,7 +11,7 @@ class TestOptionStrategy(unittest.TestCase):
 
     def setUp(self):
         # Create a basic OptionStrategy instance for testing
-        self.strategy = OptionStrategy(underlying_price=100.0, days_to_expiration=30.0, sigma=0.2)
+        self.strategy = OptionStrategy(underlying_price=100.0, days_to_expiration=30.0, volatility=0.2)
 
     def test_add_leg(self):
         # Test adding an option leg to the strategy
@@ -62,13 +61,13 @@ class TestOptionStrategy(unittest.TestCase):
         self.assertAlmostEqual(strategy.volatility(), expected_volatility)
 
         # Test overriding volatility during OptionStrategy initialization
-        strategy = OptionStrategy(underlying_price=100.0, sigma=0.4, days_to_expiration=35)
+        strategy = OptionStrategy(underlying_price=100.0, volatility=0.4, days_to_expiration=35)
         strategy.add_leg(option_type='C', strike_price=105.0, quantity=1)
         self.assertAlmostEqual(strategy.volatility(), 0.4)
 
         # Test when no option legs are present
         strategy = OptionStrategy(underlying_price=100.0)
-        self.assertAlmostEqual(strategy.volatility(), 0.25) # Default value
+        self.assertAlmostEqual(strategy.volatility(), 0.22) # Default value
 
     def test_option_legs(self):
         # Test retrieving only option legs
@@ -106,7 +105,7 @@ class TestOptionStrategy(unittest.TestCase):
 
     def test_get_pnl_attr(self):
         # Create OptionStrategy and OptionPnL instances
-        strategy = OptionStrategy(underlying_price=100, days_to_expiration=30, sigma=0.2)
+        strategy = OptionStrategy(underlying_price=100, days_to_expiration=30, volatility=0.2)
         strategy.add_leg(option_type='C', strike_price=105.0, quantity=1)
 
         pnl = OptionPnL(

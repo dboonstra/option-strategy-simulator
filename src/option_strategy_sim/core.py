@@ -64,7 +64,6 @@ class OptionStrategy(BaseModel, arbitrary_types_allowed=True):
     title: str = "Option Strategy"
     monte_carlo: bool = False
     underlying_symbol: str = "XYZ"
-    sigma: float = None  # will override vol calc from legs
 
     # GLOBAL OVERRIDES 
     stddev_range: float = STDDEV_RANGE
@@ -75,10 +74,16 @@ class OptionStrategy(BaseModel, arbitrary_types_allowed=True):
     # internal
     legs: List[OptionLeg] = []
     pnls: List[OptionPnL] = []
-    days_to_expiration: float = None
+    days_to_expiration: float = None # will default DTE
+    sigma: float = None  # will override vol calc from legs
 
 
     def __init__(self, **data):
+        # store volatility as sigma for default volatility
+        if "volatility" in data:
+            data["sigma"] = data["volatility"]
+            del data["volatility"]
+        #del data["sigma"]
         super().__init__(**data)
 
     def __repr__(self):
@@ -167,15 +172,12 @@ class OptionStrategy(BaseModel, arbitrary_types_allowed=True):
         """Calculate volatitility as average of the volatility in the legs
         or user may override with __init__( volatility = .x )
         """
-        vol: float = 0.25  # if all else is None
-        if self.sigma is None:
-            option_legs = self.option_legs()
-            if len(option_legs) == 0:
-                return vol
-            vol = sum(leg.volatility for leg in option_legs) / len(option_legs)
-        else:
-            vol = self.sigma
-        return vol
+        option_legs = self.option_legs()
+        if len(option_legs) > 0:
+            return sum(leg.volatility for leg in option_legs) / len(option_legs)
+        if self.sigma is not None and self.sigma > 0:
+            return self.sigma
+        return 0.22  # if all else none , 22 is fair
     
     def option_legs(self, stock: bool=True) -> List[OptionLeg]:
         """Returns a list of option legs, excluding underlying stock legs."""

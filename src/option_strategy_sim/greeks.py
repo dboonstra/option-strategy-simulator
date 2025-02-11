@@ -75,6 +75,8 @@ def black_scholes(
             else max(0, strike_price - underlying_price),
             0,
             None,
+            0,
+            0,
         )
     def bs_greeks(tyear:float, justmark: bool = False) -> tuple:
         sigma_T:float = volatility * np.sqrt(tyear)
