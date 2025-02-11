@@ -226,9 +226,7 @@ class OptionStrategy(BaseModel, arbitrary_types_allowed=True):
         if partitions is not None and partitions > 1:
             part_len: int = round(ostrat_dte/partitions)
             for i in range(partitions)[1:]:
-                days = int(part_len * i)
-                dte = ostrat_dte - days
-                self.pnls.append(OptionPnL(optionstrategy=self, days_to_expiration=dte))
+                self.pnls.append(OptionPnL(optionstrategy=self, days_to_expiration=int(part_len * i)))
             return
         # Handle PnL at a specific number of days forward
         if days_forward is not None and days_forward > 0:

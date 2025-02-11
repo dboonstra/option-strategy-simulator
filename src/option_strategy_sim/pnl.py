@@ -60,8 +60,8 @@ class OptionPnL(BaseModel, arbitrary_types_allowed=True):
     def __init__(self, **data):
         super().__init__(**data)
         if self.payoff:
-            self.days_to_expiration = self.optionstrategy.days_to_expiration
-
+            # self.days_to_expiration = self.optionstrategy.days_to_expiration
+            self.days_to_expiration = 0
         # build PnL profile
         self.stddev = self.calc_stddev()
         self.price_range = self.calc_price_range()
