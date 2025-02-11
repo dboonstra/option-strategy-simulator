@@ -273,8 +273,13 @@ class OptionStrategy(BaseModel, arbitrary_types_allowed=True):
 
     # ________________________
     # plot interactions
-    def plot_strategy(self):
-        _plot_stragey(self)
+    def plot_strategy(self, savefig: str = None, show=True):
+        """ Plot the strategy, 
+        Args:
+            savefig: (str)  filename to save plot to 
+            show: (bool) set to False if you do not want display (to write file only)
+        """
+        _plot_stragey(self, savefig=savefig, show=show)
     
     # ________________________
     # margin interactions

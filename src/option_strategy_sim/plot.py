@@ -27,8 +27,21 @@ def _find_pnl_even_points(arr: np.ndarray) -> np.ndarray:
     change_indices = non_zero_indices[np.where(sign_changes != 0)[0] + 1]  # adjust index to match the original array
     return change_indices
 
-def plot_strategy(ostrat, days_forward: int = None, dte: int = None, partitions: int = None):
-    """Plots the P&L and expected P&L of the strategy with enhanced aesthetics."""
+def plot_strategy(ostrat, days_forward: int = None, dte: int = None, partitions: int = None, savefig: str = None, show: bool = True):
+    """Plots the P&L and expected P&L of the strategy
+    Args:
+        ostrat: An object representing the option strategy to be plotted.  
+            It is expected to have methods like `add_pnl`, `expected_move`, `price_range`, `pnl_values`, 
+            `expected_pnl_values`, `expected_profit`, `pop`, `days_to_expiration` and attributes `underlying_price`, 
+            `title`, `underlying_symbol`, and `pnls`.
+ 
+        days_forward (int, optional): The number of days to project the P&L forward. Used in `ostrat.add_pnl`. Defaults to None.
+        dte (int, optional):  Days to expiration.  Used in `ostrat.add_pnl`. Defaults to None.
+        partitions (int, optional): Number of partitions to calculate the P&L. Used in `ostrat.add_pnl`. Defaults to None.
+        savefig (str, optional): The file path to save the plot to. If None, the plot is not saved. Defaults to None.
+        show (bool, optional): Whether to display the plot. Defaults to True.  
+
+    """
 
     # set up theo price curves if needed - this is noop if all None
     # common alternative would be to add these outside of plotting
@@ -113,4 +126,9 @@ def plot_strategy(ostrat, days_forward: int = None, dte: int = None, partitions:
     ax2.legend(lines + lines2, labels + labels2, loc='upper center', bbox_to_anchor=(0.5, -0.15), ncol=3, frameon=False)  #  legend position
     plt.tight_layout()  # make room for the axis titles
     ax1.grid(True, linestyle='--', alpha=0.5) # Grid overlay with alpha
+
+    if savefig is not None:
+        plt.savefig(savefig)
+    if not show:
+        plt.close()
     plt.show()
