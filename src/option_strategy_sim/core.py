@@ -138,6 +138,8 @@ class OptionStrategy(BaseModel, arbitrary_types_allowed=True):
         )
         # update strategy days_to_expiration
         self.days_to_expiration = self.calc_current_dte()
+        # clear pnls to be recalculated
+        self.pnls = []
 
     def delta(self) -> float:
         """Calculate sum delta in the legs"""
