@@ -119,7 +119,8 @@ print(ostrat.repr())
 # Plot the strategy's P&L
 ostrat.plot_strategy()
 ```
-underlying_price=100.0 underlying_symbol='XYZ' days_to_expiration=30.0 volatility=0.3 expected_move=8.600732686214938 pop=0.21848346818853234 expected_profit=-0.2109222338162562 cost=168.65025924292 theta=-0.6249814604296636 delta=0.3168613655540851 vega=10.209907457200684 title='Long Call' monte_carlo=False stddev_range=3.0 num_simulations=1000 r=0.05 year_days=365
+underlying_price=100.0 underlying_symbol='XYZ' days_to_expiration=30.0 volatility=0.3 expected_move=8.600732686214938 pop=0.21848346818853234 expected_profit=-0.2109222338162562 cost=168.65025924292 theta=-0.6249814604296636 delta=0.3168613655540851 vega=10.209907457200684 title='Long Call' stddev_range=3.0
+
 
 ![Image](https://github.com/user-attachments/assets/c60e5500-7c4c-4768-859d-1a8da3324b02)
 
@@ -142,7 +143,7 @@ print(ostrat.repr())
 # Visualize the strategy
 ostrat.plot_strategy()
 ```
-underlying_price=50.0 underlying_symbol='XYZ' days_to_expiration=60.0 volatility=0.3 expected_move=6.081636405595374 pop=0.8202121979678375 expected_profit=-0.1392655637013267 cost=-54.15697214414061 theta=-0.07504861280478492 delta=0.15996333839898913 vega=4.9317059900913005 title='Short Put' monte_carlo=False stddev_range=3.0 num_simulations=1000 r=0.05 year_days=365
+underlying_price=50.0 underlying_symbol='XYZ' days_to_expiration=60.0 volatility=0.3 expected_move=6.081636405595374 pop=0.8202121979678375 expected_profit=-0.1392655637013267 cost=-54.15697214414061 theta=-0.07504861280478492 delta=0.15996333839898913 vega=4.9317059900913005 title='Short Put' stddev_range=3.0
 
 ![Image](https://github.com/user-attachments/assets/60c0f1e8-2a40-4b9f-9ece-45804ffbbc2c)
 
@@ -168,7 +169,7 @@ print(ostrat.repr())
 ostrat.plot_strategy()
 
 ```
-underlying_price=100.0 underlying_symbol='XYZ' days_to_expiration=45.0 volatility=0.175 expected_move=6.144660227796855 pop=0.9154980278115109 expected_profit=0.2780350407087193 cost=-50.41750700746802 theta=-0.1933800333870672 delta=-0.05085915120209511 vega=10.967046550138337 title='Iron Condor' monte_carlo=False stddev_range=3.0 num_simulations=1000 r=0.05 year_days=365
+underlying_price=100.0 underlying_symbol='XYZ' days_to_expiration=45.0 volatility=0.175 expected_move=6.144660227796855 pop=0.9154980278115109 expected_profit=0.2780350407087193 cost=-50.41750700746802 theta=-0.1933800333870672 delta=-0.05085915120209511 vega=10.967046550138337 title='Iron Condor' stddev_range=3.0
 
 ![Image](https://github.com/user-attachments/assets/6e613649-b7cc-48b3-b5a0-d27b9c3d5bdf)
 

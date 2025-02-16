@@ -130,8 +130,8 @@ class MarginCalculator:
         return cash, margin
     
     def _calc_margin_ironcondor(self, calls, puts):
-        cash1, margin1 = self._calc_margin_spread(*calls)
-        cash2, margin2 = self._calc_margin_spread(*puts)
+        cash1, margin1 = self._calc_margin_spread(calls)
+        cash2, margin2 = self._calc_margin_spread(puts)
         return max(cash1,cash2), max(margin1, margin2)
     
 

@@ -39,7 +39,9 @@ class OptionStrategyRepr(BaseModel, extra='allow'):
     expected_move: float
     pop: float
     expected_profit: float
+    expected_roi: float
     cost: float
+    margin: float
     theta: float
     delta: float
     vega: float
@@ -91,15 +93,20 @@ class OptionStrategy(BaseModel, arbitrary_types_allowed=True):
 
     def repr(self) -> OptionStrategyRepr:
         """Model of key OptionPnL Stat Components"""
+        cost, margin = self.margin()
         data = dict(self)
         data["theta"] = self.theta()
         data["delta"] = self.delta()
         data["vega"] = self.vega()
-        data["cost"] = self.cost()
+        data["cost"] = cost
+        data["margin"] = margin
         data["volatility"] = self.volatility()
         data["expected_move"] = self.expected_move()
         data["pop"] = self.pop()
         data["expected_profit"] = self.expected_profit()
+
+        # roll up cost, dte, profit into an roi estimate
+        data["expected_roi"] = 100 * (data["expected_profit"] * 365/self.days_to_expiration)/cost
         return OptionStrategyRepr(**data)
 
 
