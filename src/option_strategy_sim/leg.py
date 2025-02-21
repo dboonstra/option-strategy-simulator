@@ -29,8 +29,8 @@ class OptionLegRepr(BaseModel, extra='allow'):
     vega: float = None
     theta: float = None
     gamma: float = None
-    # symbol: str | None = None
-    # expirey: date | None = None
+    symbol: str | None = None
+    expiration_date: str | date | None = None
 
 
     def __init__(self, **kwargs):
@@ -64,8 +64,8 @@ class OptionLeg(BaseModel, arbitrary_types_allowed=True):
     theta: float = None
     gamma: float = None
     # metadata without calculation involvement
-    # symbol: str = None
-    # expirey: date | None = None
+    symbol: str = None
+    expiration_date: str | date | None = None
 
     @field_validator('quantity')
     def validate_quantity(cls, value):
@@ -89,6 +89,16 @@ class OptionLeg(BaseModel, arbitrary_types_allowed=True):
         
         if self.mark is None and self.volatility is None:
             self.volatility = self.optionstrategy.volatility()
+        
+        if self.symbol is None:
+            if self.option_type == 'S':
+                self.symbol = self.optionstrategy.underlying_symbol
+            else:
+                self.symbol = "-".join([
+                    self.optionstrategy.underlying_symbol,
+                    self.option_type,
+                    str(self.days_to_expiration),
+                ]) 
 
         greeks = Greeks(        
             underlying_price=self.optionstrategy.underlying_price,
@@ -109,11 +119,13 @@ class OptionLeg(BaseModel, arbitrary_types_allowed=True):
         self.mark = self.mark or greeks.mark
         self.gamma = self.gamma or greeks.gamma
         if self.quantity < 0:
-            self.theta = self.theta or -greeks.theta 
-            self.vega = self.vega or -greeks.vega
+            self.theta = -abs(self.theta or greeks.theta) 
+            self.vega  = -abs(self.vega or greeks.vega)
+            self.gamma = -abs(self.gamma or greeks.gamma)
         else:
-            self.theta = self.theta or greeks.theta
-            self.vega = self.vega or greeks.vega
+            self.theta = abs(self.theta or greeks.theta)
+            self.vega  = abs(self.vega or greeks.vega)
+            self.gamma = abs(self.gamma or greeks.gamma) 
 
     def __repr__(self):
         return model_repr(self)
