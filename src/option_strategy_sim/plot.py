@@ -74,6 +74,11 @@ def plot_strategy(ostrat, days_forward: int = None, dte: int = None, partitions:
     for std in [stdmin, stdmax]:
         ax1.axvline(std, color='#457b9d', linestyle='-.', alpha=0.7, label=f'2-std {std:.2f}')  # Darker, less obtrusive lines
 
+    ax1.axvspan(underlying_price-2*stddev, underlying_price-stddev, color='0.95')
+    ax1.axvspan(underlying_price-stddev, underlying_price+stddev, color='0.9')
+    ax1.axvspan(underlying_price+stddev, underlying_price+2*stddev, color='0.95')
+    ax1.axvline(underlying_price, color='darkgrey', linestyle='--')
+
 
     # Plot PnL with a vibrant blue and a slight shadow effect for depth
     ax1.plot(price_range, pnl_values, color='#2a6f97', linewidth=2.5, label=f"PnL Payoff: ExP({expected_profit:.2f}) POP({pop:.2f})", zorder=3)  # Darker shade of blue
