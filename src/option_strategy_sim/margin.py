@@ -75,6 +75,8 @@ class MarginCalculator:
         option_cash, option_margin = self._calc_option_margin()
         cash = stock_cash + option_cash
         margin = stock_margin + option_margin
+        if cash < margin:
+            cash = margin
         return cash, margin
     
     def _calc_option_margin_assum(self, *legs) -> tuple[float,float]:
