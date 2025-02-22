@@ -153,10 +153,20 @@ from option_strategy_sim import OptionStrategy
 ostrat = OptionStrategy(underlying_price=100, days_to_expiration=45, title="Iron Condor")
 
 # Add the four legs of the Iron Condor
-ostrat.add_leg(option_type='C', strike_price=110, quantity=-1, volatility=0.20) # Long Call
-ostrat.add_leg(option_type='C', strike_price=115, quantity=1, volatility=0.15) # Short Call
-ostrat.add_leg(option_type='P', strike_price=90, quantity=-1, volatility=0.20)  # Short Put
-ostrat.add_leg(option_type='P', strike_price=85, quantity=1, volatility=0.15)  # Long Put
+# ostrat.add_leg(option_type='C', strike_price=110, quantity=-1, volatility=0.20) # Long Call
+# ostrat.add_leg(option_type='C', strike_price=115, quantity=1, volatility=0.15) # Short Call
+# ostrat.add_leg(option_type='P', strike_price=90, quantity=-1, volatility=0.20)  # Short Put
+# ostrat.add_leg(option_type='P', strike_price=85, quantity=1, volatility=0.15)  # Long Put
+
+# We can add them together as a list group or a pandas dataframe
+# using ostrat.add_legs
+iron_condor_legs = [
+    {"option_type":'C', "strike_price":110, "quantity":-1, "volatility":0.20},
+    {"option_type":'C', "strike_price":115, "quantity":1, "volatility":0.15},
+    {"option_type":'P', "strike_price":90,  "quantity":-1, "volatility":0.20},
+    {"option_type":'P', "strike_price":85,  "quantity":1, "volatility":0.15},
+]
+ostrat.add_legs( iron_condor_legs )
 
 
 # Analyze the strategy
