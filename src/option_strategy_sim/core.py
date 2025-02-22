@@ -8,7 +8,7 @@
 
 import numpy as np
 from scipy.stats import norm
-import matplotlib.pyplot as plt
+import pandas as pd
 
 from pydantic import BaseModel, field_validator, ValidationError # type: ignore
 from typing import List
@@ -45,6 +45,7 @@ class OptionStrategyRepr(BaseModel, extra='allow'):
     theta: float
     delta: float
     vega: float
+    gamma: float
     title: str 
     stddev_range: float 
     #monte_carlo: bool = False
@@ -98,6 +99,7 @@ class OptionStrategy(BaseModel, arbitrary_types_allowed=True):
         data["theta"] = self.theta()
         data["delta"] = self.delta()
         data["vega"] = self.vega()
+        data["gamma"] = self.gamma()
         data["cost"] = cost
         data["margin"] = margin
         data["volatility"] = self.volatility()
@@ -109,9 +111,42 @@ class OptionStrategy(BaseModel, arbitrary_types_allowed=True):
         data["expected_roi"] = 100 * (data["expected_profit"] * 365/self.days_to_expiration)/cost
         return OptionStrategyRepr(**data)
 
+    def reset_pnl(self):
+        # update strategy days_to_expiration
+        self.days_to_expiration = self.calc_current_dte()
+        # clear pnls to be recalculated
+        self.pnls = []
+
 
     # ________________________
     # Leg interactions
+
+    def add_legs(
+            self,
+            legs: list[dict] | pd.DataFrame,
+        ):
+        if not isinstance(legs, list):
+            # make it a list from pandas
+            legs = legs.to_dict('records')
+        for leg in legs:
+            if leg['option_type'] == 'S':
+                if 'mark' in leg:
+                    if leg['mark'] is None:
+                        leg['mark'] = leg['strike_price']
+                else:
+                    leg['mark'] = leg['strike_price']
+                leg['days_to_expiration'] = 1000
+            if 'volatility' in leg:
+                if leg['volatility'] is None:
+                    leg['volatility'] = self.volatility()
+            else:
+                leg['volatility'] = self.volatility()
+            if 'days_to_expiration' not in leg:
+                leg['days_to_expiration'] = self.days_to_expiration
+            leg['optionstrategy'] = self
+            self.legs.append(OptionLeg(**leg))
+            self.reset_pnl()
+
 
     def add_leg(
         self,
@@ -146,10 +181,7 @@ class OptionStrategy(BaseModel, arbitrary_types_allowed=True):
                 optionstrategy=self,
             )
         )
-        # update strategy days_to_expiration
-        self.days_to_expiration = self.calc_current_dte()
-        # clear pnls to be recalculated
-        self.pnls = []
+        self.reset_pnl()
 
     def delta(self) -> float:
         """Calculate sum delta in the legs"""
@@ -162,6 +194,10 @@ class OptionStrategy(BaseModel, arbitrary_types_allowed=True):
     def vega(self) -> float:
         """Calculate sum delta in the legs"""
         return sum(leg.vega * leg.quantity for leg in self.option_legs())
+
+    def gamma(self) -> float:
+        """Calculate sum delta in the legs"""
+        return sum(leg.gamma * leg.quantity for leg in self.option_legs())
 
     def cost(self) -> float:
         """Calculate sum delta in the legs"""
