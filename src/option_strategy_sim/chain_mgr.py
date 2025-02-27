@@ -771,8 +771,8 @@ class OptionChains(BaseModel, arbitrary_types_allowed=True):
         if self.chains is None:
             if self.csv is not None:
                 self.chains = get_chains_from_csv(self.csv)
-        else:
-                raise ValueError("Unimplemented chain source")
+        elif not isinstance(self.chains, pd.DataFrame):
+            raise ValueError("Unimplemented chain source")
         self.chains = prepare_chains(chains=self.chains, prune_spx=True)
         return super().model_post_init(context)
 
