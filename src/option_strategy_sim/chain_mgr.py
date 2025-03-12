@@ -495,7 +495,7 @@ class OptionChainsSymDTE(BaseModel, arbitrary_types_allowed=True):
     def contract(
             self,
             quantity: int,
-            option_type: str,
+            option_type: str = None,
             symbol: str = None,
             delta: float = None,
             clear: bool = False,
@@ -504,11 +504,18 @@ class OptionChainsSymDTE(BaseModel, arbitrary_types_allowed=True):
         Add a contract to dataframe legs by delta or symbol 
         Returns all legs dataframe
         """
-        delta = self.delta(option_type, delta)
         if symbol is not None:
             c = self._contract(option_type=option_type, symbol=symbol)
         elif delta is not None:
+            if option_type is None:
+                if delta > 0:
+                    option_type = 'C'
+                else:
+                    option_type = 'P'
+            delta = self.delta(option_type, delta)
             c = self._contract(option_type=option_type, key='delta', val=delta)
+        else:
+            raise ValueError("contract needs delta or symbol")
         c['quantity'] = quantity
         return self.join_legs(c, clear=clear)
     
