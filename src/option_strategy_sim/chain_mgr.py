@@ -465,7 +465,7 @@ class OptionChainsSymDTE(BaseModel, arbitrary_types_allowed=True):
         if option_type is None and symbol is None:
             raise ValueError("option_type or symbol required")
         if symbol is not None: # there can be only one
-            ctct: pd.DataFrame = filter_by_value(self.chains,'symbol', val=symbol)
+            ctct: pd.DataFrame = filter_by_value(self.chain,'symbol', val=symbol)
         else:
             df = self.calls if option_type == 'C' else self.puts
             ctct: pd.DataFrame = filter_by_closest_value(df, key, val, direction=direction) #iloc[0]
