@@ -45,10 +45,12 @@ def black_scholes(
         option_type (str, optional): The type of option, 'C' for call or 'P' for put.
         theta_days (float, optional): Time period in years (e.g., 1/365) to calculate theta decay
     Returns:
-        tuple[float, float, float]: A tuple containing:
+        tuple[float, float, float, float, float]: A tuple containing:
             - mark (float): The calculated Black-Scholes option price.
             - delta (float): The option's delta.
             - theta (float): The option's theta (time decay) over the given period in `theta_days`, or None if theta_days is not provided.
+	    - vega (float):
+    	    - gamma (float):
     Notes:
         - If time to expiration (T) is zero or negative, the function returns the intrinsic value of the option and a delta of 0.
         - Theta is calculated as the difference in option price between the current time and a time `theta_days` in the future.

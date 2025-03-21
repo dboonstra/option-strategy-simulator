@@ -17,7 +17,7 @@ dte = 42
 
 
 print("Black Scholes")
-price, delta, theta = black_scholes(
+price, delta, theta, vega, gamma = black_scholes(
     underlying_price=underlying_price,
     strike_price=105,
     time_days = dte,
